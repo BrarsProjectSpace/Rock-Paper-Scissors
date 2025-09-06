@@ -31,6 +31,13 @@ const restartbtn = document.getElementById("restart");
 const middle = document.querySelector(".middle");
 const middleSection = document.getElementById("middle-section"); // gradient flash container
 
+// sounds
+const winSound = new Audio("win.wav");
+const loseSound = new Audio("lost.mp3");
+
+winSound.volume = 0.1;
+loseSound.volume = 0.1;
+
 // -----------------------------
 // GAME STATE
 // -----------------------------
@@ -45,6 +52,7 @@ const maxScore = 5;
 // Pick a random computer choice
 function getComputersSelection() {
   const randomIndex = Math.floor(Math.random() * computersButtons.length); // 0–2
+  restartbtn.style.transform = "Scale(1)";
   return computersButtons[randomIndex];
 }
 
@@ -79,6 +87,53 @@ function updateScores() {
 // Toggle player buttons
 function toggleButtons(state) {
   playerButtons.forEach((btn) => (btn.disabled = !state));
+}
+
+// -----------------------------
+// CONFETTI HELPERS
+// -----------------------------
+function fireConfetti() {
+  // Big win celebration 🎉
+  confetti({
+    particleCount: 200,
+    spread: 120,
+    startVelocity: 45,
+    origin: { y: 0.6 },
+  });
+
+  setTimeout(() => {
+    confetti({
+      particleCount: 150,
+      spread: 160,
+      startVelocity: 50,
+      origin: { y: 0.7 },
+    });
+  }, 400);
+}
+
+function tinyConfetti() {
+  // Small burst for round win 🎊
+  confetti({
+    particleCount: 30,
+    spread: 40,
+    startVelocity: 20,
+    origin: { y: 0.9 },
+  });
+}
+
+function loseEffect() {
+  // Screen shake
+  middleSection.classList.add("shake");
+  setTimeout(() => middleSection.classList.remove("shake"), 300);
+
+  // Red sparks (falling particles)
+  confetti({
+    particleCount: 25,
+    spread: 40,
+    startVelocity: 25,
+    origin: { y: 0.7 },
+    colors: ["#ff0000", "#990000"],
+  });
 }
 
 // -----------------------------
@@ -121,6 +176,13 @@ function playRound(playerChoice) {
     playerScoreEl.classList.add("score-bounce");
     playerWinStar.style.visibility = "visible";
     showResult("You Win!");
+    loseSound.pause();
+    winSound.currentTime = 0;
+    winSound.play();
+
+    // 🎊 Tiny confetti for each round win
+    tinyConfetti();
+
     middleSection.classList.add("flash-win");
     setTimeout(() => {
       middleSection.classList.remove("flash-win");
@@ -132,6 +194,13 @@ function playRound(playerChoice) {
     computerScoreEl.classList.add("score-bounce");
     computerWinStar.style.visibility = "visible";
     showResult("Computer Wins!");
+    winSound.pause();
+    loseSound.currentTime = 0;
+    loseSound.play();
+
+    // 🔻 Screen shake + red sparks
+    loseEffect();
+
     middleSection.classList.add("flash-lose");
     setTimeout(() => {
       middleSection.classList.remove("flash-lose");
@@ -155,10 +224,17 @@ function checkGameEnd() {
   if (playerScore >= maxScore || computerScore >= maxScore) {
     toggleButtons(false);
 
+    restartbtn.classList.add("restart-pulse");
+    restartbtn.style.transform = "Scale(1.5)";
+    restartbtn.style.width = "40%";
+
     let message = "";
     if (playerScore >= maxScore) {
       message = "🎉 You Win the Match!";
       middleSection.classList.add("flash-win");
+
+      // 🎉 Big confetti celebration
+      fireConfetti();
     } else {
       message = "💻 Computer Wins the Match!";
       middleSection.classList.add("flash-lose");
@@ -175,6 +251,10 @@ function checkGameEnd() {
 // START GAME HANDLING
 // -----------------------------
 startBtn.addEventListener("click", () => {
+  start();
+});
+
+function start() {
   // Animate shrinking
   startDisc.classList.add("shrink");
 
@@ -183,7 +263,7 @@ startBtn.addEventListener("click", () => {
     resetSelections();
     updateScores();
   }, 600);
-});
+}
 
 // If player clicks before pressing Start → hide start screen & play immediately
 playerButtons.forEach((btn) => {
@@ -201,15 +281,19 @@ playerButtons.forEach((btn) => {
 // RESTART
 // -----------------------------
 restartbtn.addEventListener("click", () => {
+  restartbtn.classList.remove("restart-pulse");
   playerScore = 0;
   computerScore = 0;
   updateScores();
 
+  start();
   playerWinStar.style.visibility = "hidden";
   computerWinStar.style.visibility = "hidden";
 
   resetSelections();
-  showResult("Make Your Choice");
+  setTimeout(() => {
+    showResult("Game Restarted | Make Your Move 🎮");
+  }, 600);
 
   const endMsg = middle.querySelector(".end-message");
   if (endMsg) endMsg.remove();

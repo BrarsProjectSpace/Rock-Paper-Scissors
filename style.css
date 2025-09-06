@@ -279,6 +279,10 @@ p {
     /* background-color: #311b92; */
 }
 
+button{
+    cursor: pointer;
+}
+
 .player-score p,
 .computer-score p {
     font-size: 65px;
@@ -414,4 +418,24 @@ p {
     text-align: center;
     z-index: 10;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1.2); }
+  50% { transform: scale(1.5); }
+}
+.restart-pulse {
+  animation: pulse 0.8s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, 0); }
+  50% { transform: translate(5px, 0); }
+  75% { transform: translate(-5px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+.shake {
+  animation: shake 0.3s;
 }
