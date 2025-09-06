@@ -14,28 +14,77 @@
             </div>
             <div class="left-section">
                 <h1>PLAYER</h1>
+                <div id="player-win" class="star">
+                    <p>🌟</p>
+                </div>
                 <div class="buttons">
-                    <button class="rock">
+                    <button class="rock left player" id="p-rock">
                         <p>🤜</p>
                         <p>ROCKS</p>
                     </button>
-                    <button class="paper">
+                    <button class="paper left player" id="p-paper">
                         <p>🖐️</p>
                         <p>PAPERS</p>
                     </button>
-                    <button class="Scissor">
+                    <button class="Scissor left player active" id="p-scissor">
                         <p>🤞</p>
                         <p>SCISSORS</p>
                     </button>
                 </div>
             </div>
-            <div class="middle-section">
+
+            <!-- main game board -->
+            <div class="middle-section" id="middle-section">
+                <div class="player-score">
+                    <div class="score">
+                        <p id="player-score">0</p>
+
+                    </div>
+                </div>
+                <div class="middle">
+                    <div class="start-disc">
+                        <button id="start-btn">Start</button>
+                    </div>
+                </div>
+                <div class="computer-score">
+                    <div class="score">
+
+                        <p id="computer-score">0</p>
+                    </div>
+                </div>
 
             </div>
+
+            <!-- computers section -->
             <div class="right-section">
-
+                <h1>COMPUTER</h1>
+                <div id="computer-win" class="star">
+                    <p>🌟</p>
+                </div>
+                <div class="buttons">
+                    <div class="rock right computer" id="c-rock">
+                        <p>🤜</p>
+                        <p>ROCKS</p>
+                    </div>
+                    <div class="paper right computer" id="c-paper">
+                        <p>🖐️</p>
+                        <p>PAPERS</p>
+                    </div>
+                    <div class="Scissor right computer" id="c-scissor">
+                        <p>🤞</p>
+                        <p>SCISSORS</p>
+                    </div>
+                </div>
             </div>
+
+            <!-- footer -->
             <div class="footer">
+                <div class="cc">
+                    <p>Made with 💝 By &nbsp</p>
+                    <p> RAVINDER BRAR</p>
+                </div>
+
+                <button id="restart">Restart</button>
             </div>
         </div>
 

@@ -54,24 +54,11 @@ body {
     background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
     border-radius: 25px;
     margin: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.15);
     padding: 20px;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-/* MIDDLE SECTION (Game) */
-.middle-section {
-    grid-area: 2 / 2 / 5 / 5;
-    background-color: #9575cd;
-    border-radius: 25px;
-    margin: 5px;
-    padding: 20px;
-    box-shadow: 0 0px 20px rgba(0, 0, 0, 0.25);
-    display: flex;
-    justify-content: center;
     align-items: center;
 }
 
@@ -81,8 +68,12 @@ body {
     background: linear-gradient(135deg, #89f7fe, #66a6ff);
     border-radius: 25px;
     margin: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.15);
     padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* FOOTER */
@@ -97,6 +88,23 @@ body {
     font-size: 0.9rem;
     letter-spacing: 1px;
     box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.cc{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cc p {
+    color: rgb(185, 185, 185);
+}
+
+.cc :nth-child(2) {
+    font-weight: bolder;
 }
 
 /* UTILITIES */
@@ -107,7 +115,6 @@ p {
     margin: 0;
 }
 
-
 .buttons {
     display: flex;
     align-items: center;
@@ -117,23 +124,268 @@ p {
     height: 100%;
 }
 
-.buttons button {
+.buttons button,
+.computer {
     width: 150px;
     height: 150px;
     border-radius: 45%;
     cursor: pointer;
-    border:none;
+    border: none;
     font-size: x-large;
     font-weight: bolder;
     background-color: white;
     transition: all 0.2s ease;
 }
 
-.buttons button :nth-child(1){
+.buttons button :nth-child(1),
+.computer :nth-child(1) {
     font-size: 50px;
 }
 
-.buttons button:hover{
+.buttons button:hover {
     background-color: rgb(242, 241, 241);
     transform: scale(1.05);
+}
+
+.right :nth-child(1) {
+    transform: rotateY(180deg);
+}
+
+.computer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+}
+
+/* MIDDLE SECTION (Game) */
+.middle-section {
+    grid-area: 2 / 2 / 5 / 5;
+    background-color: #9575cd;
+    border-radius: 25px;
+    margin: 5px;
+    padding: 20px;
+    box-shadow: 0 0px 20px rgba(0, 0, 0, 0.25);
+    display: grid;
+    grid-template-areas: 'left middle right';
+    align-items: center;
+    position: relative;
+    /* for overlay flashes */
+    overflow: hidden;
+}
+
+/* START DISC */
+.start-disc {
+    grid-area: 'middle';
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.start-disc p {
+    text-align: center;
+    font-size: 30px;
+    color: whitesmoke;
+}
+
+#start-btn {
+    width: 200px;
+    height: 70px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
+}
+
+#start-btn:hover {
+    box-shadow: 0px 0px 11px rgba(0, 0, 0, 0.4);
+    font-size: 34px;
+}
+
+/* Shrink and fade */
+.start-disc.shrink {
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.star {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.star p {
+    font-size: 50px;
+    background-color: #311b92;
+    border-radius: 50%;
+    text-align: center;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#player-win,
+#computer-win {
+    visibility: hidden;
+    /* hidden by default */
+}
+
+#player-win.visible {
+    visibility: visible;
+}
+
+#computer-win.visible {
+    visibility: visible;
+}
+
+.player-score {
+    grid-area: 'left';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.score {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f566ff;
+    border-radius: 50%;
+}
+
+.middle {
+    grid-area: 'middle';
+}
+
+.player-score p,
+.computer-score p {
+    font-size: 65px;
+    color: white;
+    font-weight: bolder;
+}
+
+.computer-score {
+    grid-area: 'right';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ------------------
+   ANIMATIONS & FEEDBACK
+   (ADDED: preserve your classes and footer)
+------------------ */
+
+/* --- Bounce animation (CLASS NAME: .bounce) --- */
+.bounce {
+    animation: bounce 0.3s ease;
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* --- Score pop animation (CLASS NAME: .score-bounce) --- */
+.score-bounce {
+    animation: scorePop 0.35s ease;
+}
+
+@keyframes scorePop {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.35);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ------------------------
+   Flash overlay (no lag, fades out)
+   applied to .middle-section via JS classes:
+   .flash-win, .flash-lose, .flash-draw
+------------------------ */
+
+.middle-section::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* keep base purple intact; overlay will fade out quickly */
+.middle-section.flash-win::after {
+    background: linear-gradient(135deg, #4caf50, #81c784);
+    animation: overlayFade 0.5s forwards;
+}
+
+.middle-section.flash-lose::after {
+    background: linear-gradient(135deg, #e53935, #ef5350);
+    animation: overlayFade 0.5s forwards;
+}
+
+.middle-section.flash-draw::after {
+    background: linear-gradient(135deg, #fbc02d, #fff176);
+    animation: overlayFade 0.5s forwards;
+}
+
+@keyframes overlayFade {
+    0% {
+        opacity: 0.9;
+    }
+
+    70% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+#restart {
+    width: 170px;
+    font-size: 25px;
+    height: 40px;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    background-color: #ef5350;
 }
