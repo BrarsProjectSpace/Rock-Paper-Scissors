@@ -279,7 +279,7 @@ p {
     /* background-color: #311b92; */
 }
 
-button{
+button {
     cursor: pointer;
 }
 
@@ -421,21 +421,52 @@ button{
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1.2); }
-  50% { transform: scale(1.5); }
+
+    0%,
+    100% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
 }
+
 .restart-pulse {
-  animation: pulse 0.8s infinite;
+    animation: pulse 0.8s infinite;
 }
 
 @keyframes shake {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-5px, 0); }
-  50% { transform: translate(5px, 0); }
-  75% { transform: translate(-5px, 0); }
-  100% { transform: translate(0, 0); }
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-5px, 0);
+    }
+
+    50% {
+        transform: translate(5px, 0);
+    }
+
+    75% {
+        transform: translate(-5px, 0);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
 }
 
 .shake {
-  animation: shake 0.3s;
+    animation: shake 0.3s;
+}
+
+
+
+.credits{
+    width: 35px;
+    font-size: 10px;
+    height: 20px;
+    flex: 0.1;
 }

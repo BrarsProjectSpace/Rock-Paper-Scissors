@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>RPS - ROCK PAPER SCISSORS</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style.css" />
+        <link rel="shortcut icon" href="logo.png" type="image/x-icon">
     </head>
     <body>
-
         <div class="parent">
             <div class="navbar">
                 <h1>ROCK PAPER SCISSORS - Win 5 Times to Win</h1>
             </div>
+
+            <!-- Player -->
             <div class="left-section">
                 <h1>PLAYER</h1>
-                <div id="player-win" class="star">
-                    <p>🌟</p>
-                </div>
+                <div id="player-win" class="star"><p>🌟</p></div>
                 <div class="buttons">
                     <button class="rock left player" id="p-rock">
                         <p>🤜</p>
@@ -33,34 +33,28 @@
                 </div>
             </div>
 
-            <!-- main game board -->
+            <!-- Game board -->
             <div class="middle-section" id="middle-section">
                 <div class="player-score">
-                    <div class="score">
-                        <p id="player-score">0</p>
-
-                    </div>
+                    <div class="score"><p id="player-score">0</p></div>
                 </div>
+
                 <div class="middle">
                     <div class="start-disc">
                         <button id="start-btn">Start</button>
                     </div>
                 </div>
-                <div class="computer-score">
-                    <div class="score">
 
-                        <p id="computer-score">0</p>
-                    </div>
+                <div class="computer-score">
+                    <div class="score"><p id="computer-score">0</p></div>
                 </div>
 
             </div>
 
-            <!-- computers section -->
+            <!-- Computer -->
             <div class="right-section">
                 <h1>COMPUTER</h1>
-                <div id="computer-win" class="star">
-                    <p>🌟</p>
-                </div>
+                <div id="computer-win" class="star"><p>🌟</p></div>
                 <div class="buttons">
                     <div class="rock right computer" id="c-rock">
                         <p>🤜</p>
@@ -77,20 +71,22 @@
                 </div>
             </div>
 
-            <!-- footer -->
+            <!-- Footer -->
             <div class="footer">
                 <div class="cc">
-                    <p>Made with 💝 By &nbsp</p>
-                    <p> RAVINDER BRAR</p>
+                    <p>Made with 💝 By &nbsp;</p>
+                    <p>RAVINDER BRAR</p>
                 </div>
-
                 <button id="restart">Restart</button>
+                <a href="credits.html"><button
+                        class="credits">credits</button></a>
             </div>
         </div>
 
-        <!-- javascript -->
+        <!-- Confetti Library -->
         <script
             src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+        <!-- Game Script -->
         <script src="script.js"></script>
     </body>
 </html>

@@ -225,8 +225,6 @@ function checkGameEnd() {
     toggleButtons(false);
 
     restartbtn.classList.add("restart-pulse");
-    restartbtn.style.transform = "Scale(1.5)";
-    restartbtn.style.width = "40%";
 
     let message = "";
     if (playerScore >= maxScore) {
