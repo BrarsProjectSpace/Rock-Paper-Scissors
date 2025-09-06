@@ -9,7 +9,7 @@ const pScissor = document.getElementById("p-scissor");
 const playerButtons = [pRock, pPaper, pScissor];
 const playerWinStar = document.getElementById("player-win");
 
-// Computer "buttons"
+// Computer "buttons" (divs styled as buttons)
 const cRock = document.getElementById("c-rock");
 const cPaper = document.getElementById("c-paper");
 const cScissor = document.getElementById("c-scissor");
@@ -24,18 +24,19 @@ const computerScoreEl = document.getElementById("computer-score");
 const startBtn = document.getElementById("start-btn");
 const startDisc = document.querySelector(".start-disc");
 
-// Restart button
+// Restart btn
 const restartbtn = document.getElementById("restart");
 
-// Middle section (for results & animations)
-const middleSection = document.getElementById("middle-section");
+// Middle section (for results)
 const middle = document.querySelector(".middle");
+const middleSection = document.getElementById("middle-section"); // gradient flash container
 
 // -----------------------------
 // GAME STATE
 // -----------------------------
 let playerScore = 0;
 let computerScore = 0;
+const maxScore = 5;
 
 // -----------------------------
 // UTILITY FUNCTIONS
@@ -43,7 +44,7 @@ let computerScore = 0;
 
 // Pick a random computer choice
 function getComputersSelection() {
-  const randomIndex = Math.floor(Math.random() * computersButtons.length);
+  const randomIndex = Math.floor(Math.random() * computersButtons.length); // 0–2
   return computersButtons[randomIndex];
 }
 
@@ -54,8 +55,9 @@ function resetSelections() {
   });
 }
 
-// Show result message
+// Show result message in the middle section
 function showResult(message) {
+  // Clear old result if any
   let resultBox = document.getElementById("result-box");
   if (!resultBox) {
     resultBox = document.createElement("h2");
@@ -68,42 +70,15 @@ function showResult(message) {
   resultBox.textContent = message;
 }
 
-// Update score UI + animate
+// Update score UI
 function updateScores() {
   playerScoreEl.textContent = playerScore;
   computerScoreEl.textContent = computerScore;
-
-  // Bounce animation
-  playerScoreEl.classList.add("score-bounce");
-  computerScoreEl.classList.add("score-bounce");
-
-  setTimeout(() => {
-    playerScoreEl.classList.remove("score-bounce");
-    computerScoreEl.classList.remove("score-bounce");
-  }, 400);
 }
 
-// Flash feedback on middle section
-function flashFeedback(result) {
-  middleSection.classList.remove("flash-win", "flash-lose", "flash-draw");
-
-  if (result === "win") {
-    middleSection.classList.add("flash-win");
-  } else if (result === "lose") {
-    middleSection.classList.add("flash-lose");
-  } else {
-    middleSection.classList.add("flash-draw");
-  }
-
-  setTimeout(() => {
-    middleSection.classList.remove("flash-win", "flash-lose", "flash-draw");
-  }, 1000);
-}
-
-// Bounce animation helper
-function bounceElement(el) {
-  el.classList.add("bounce");
-  setTimeout(() => el.classList.remove("bounce"), 300);
+// Toggle player buttons
+function toggleButtons(state) {
+  playerButtons.forEach((btn) => (btn.disabled = !state));
 }
 
 // -----------------------------
@@ -112,16 +87,18 @@ function bounceElement(el) {
 function playRound(playerChoice) {
   resetSelections();
 
-  // Highlight player choice + bounce
+  // Highlight player choice
   playerChoice.style.backgroundColor = "lightgreen";
-  bounceElement(playerChoice);
+  playerChoice.classList.add("bounce");
+  setTimeout(() => playerChoice.classList.remove("bounce"), 300);
 
   // Computer picks random choice
   const computerChoice = getComputersSelection();
   computerChoice.style.backgroundColor = "lightcoral";
-  bounceElement(computerChoice);
+  computerChoice.classList.add("bounce");
+  setTimeout(() => computerChoice.classList.remove("bounce"), 300);
 
-  // Normalize IDs
+  // Normalize IDs (after last "-")
   const playerId = playerChoice.id.split("-").pop();
   const computerId = computerChoice.id.split("-").pop();
 
@@ -132,40 +109,83 @@ function playRound(playerChoice) {
   // Decide winner
   if (playerId === computerId) {
     showResult("It's a Draw!");
-    flashFeedback("draw");
+    middleSection.classList.add("flash-draw");
+    setTimeout(() => middleSection.classList.remove("flash-draw"), 500);
   } else if (
     (playerId === "rock" && computerId === "scissor") ||
     (playerId === "paper" && computerId === "rock") ||
     (playerId === "scissor" && computerId === "paper")
   ) {
     playerScore++;
+    playerScoreEl.textContent = playerScore;
+    playerScoreEl.classList.add("score-bounce");
     playerWinStar.style.visibility = "visible";
     showResult("You Win!");
-    flashFeedback("win");
+    middleSection.classList.add("flash-win");
+    setTimeout(() => {
+      middleSection.classList.remove("flash-win");
+      playerScoreEl.classList.remove("score-bounce");
+    }, 500);
   } else {
     computerScore++;
+    computerScoreEl.textContent = computerScore;
+    computerScoreEl.classList.add("score-bounce");
     computerWinStar.style.visibility = "visible";
     showResult("Computer Wins!");
-    flashFeedback("lose");
+    middleSection.classList.add("flash-lose");
+    setTimeout(() => {
+      middleSection.classList.remove("flash-lose");
+      computerScoreEl.classList.remove("score-bounce");
+    }, 500);
   }
 
+  // Update scores
   updateScores();
+
+  // Check if game ended
+  checkGameEnd();
+
+  console.log(`Player: ${playerId}, Computer: ${computerId}`);
+}
+
+// -----------------------------
+// GAME END CHECK
+// -----------------------------
+function checkGameEnd() {
+  if (playerScore >= maxScore || computerScore >= maxScore) {
+    toggleButtons(false);
+
+    let message = "";
+    if (playerScore >= maxScore) {
+      message = "🎉 You Win the Match!";
+      middleSection.classList.add("flash-win");
+    } else {
+      message = "💻 Computer Wins the Match!";
+      middleSection.classList.add("flash-lose");
+    }
+
+    const endMsg = document.createElement("div");
+    endMsg.classList.add("end-message");
+    endMsg.innerHTML = `<h2>${message}</h2>`;
+    middle.appendChild(endMsg);
+  }
 }
 
 // -----------------------------
 // START GAME HANDLING
 // -----------------------------
 startBtn.addEventListener("click", () => {
+  // Animate shrinking
   startDisc.classList.add("shrink");
 
   setTimeout(() => {
-    startDisc.style.display = "none";
+    startDisc.style.display = "none"; // fully remove start screen
     resetSelections();
     updateScores();
   }, 600);
 });
 
-// Allow play without pressing start
+// If player clicks before pressing Start → hide start screen & play immediately
 playerButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     if (startDisc.style.display !== "none") {
@@ -178,14 +198,23 @@ playerButtons.forEach((btn) => {
 });
 
 // -----------------------------
-// RESTART HANDLING
+// RESTART
 // -----------------------------
 restartbtn.addEventListener("click", () => {
-  resetSelections();
   playerScore = 0;
   computerScore = 0;
   updateScores();
+
   playerWinStar.style.visibility = "hidden";
   computerWinStar.style.visibility = "hidden";
-  showResult("Game Restarted! Make your choice.");
+
+  resetSelections();
+  showResult("Make Your Choice");
+
+  const endMsg = middle.querySelector(".end-message");
+  if (endMsg) endMsg.remove();
+
+  middleSection.classList.remove("flash-win", "flash-lose", "flash-draw");
+
+  toggleButtons(true);
 });
